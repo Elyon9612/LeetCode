@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int result = nums[0];
+        int mina = result;
+        int maxa = result;
+        for(int i=1;i<nums.size();i++){
+            if(nums[i] < 0){
+                int tmp = mina;
+                mina = maxa;
+                maxa = tmp;
+            }
+            mina = min(nums[i],nums[i]*mina);
+            maxa = max(nums[i],nums[i]*maxa);
+            cout << mina << " " << maxa << endl;
+            result = max(result,maxa);
+        }
+        return result;
+    }
+};

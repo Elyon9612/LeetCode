@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        int index = 0;
+        int result = 0;
+        for(auto& a:tokens){
+            if(a =="+" || a=="-" || a=="*" || a=="/"){
+                helper(tokens,index,a);
+            }else{
+                tokens[index++] = a;
+            }
+        }
+        
+        return stoi(tokens[0]);
+    }
+private:
+    void helper(vector<string>& tokens,int& index,string a){
+        int nums1 = stoi(tokens[--index]);
+        int nums2 = stoi(tokens[--index]);
+        if(a =="+") nums1 = nums2+nums1;
+        if(a =="-") nums1 = nums2-nums1;
+        if(a =="*") nums1 = nums2*nums1;
+        if(a =="/") nums1 = nums2/nums1;
+        tokens[index++] = to_string(nums1);
+    }
+};
