@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int compareVersion(string version1, string version2) {
+        int n = version1.length();
+        int m = version2.length();
+        int a=0,b=0;
+        
+        while(a<n || b<m){
+            int num1 = 0;
+            int num2 = 0;
+            while(a<n && version1[a] != '.'){
+                num1 = num1 * 10 + (version1[a] - '0');
+                a ++;
+            }
+            while(b<m && version2[b] != '.'){
+                num2 = num2 * 10 + (version2[b] - '0');
+                b ++;
+            }
+            if(a<version1.length()) a++;
+            if(b<version2.length()) b++;
+            
+            if(num1 < num2){
+                cout << a << " " << b << endl;
+                return -1;
+            }
+            else if(num2<num1)
+                return 1;
+            else
+                continue;
+        }
+        return 0;
+    }
+};
