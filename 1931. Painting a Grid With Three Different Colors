@@ -1,26 +1,62 @@
-class Solution { // 104 ms, faster than 33.33%
+typedef long long ll;
+
+class Solution {
+    ll M = 1e9+7;  
 public:
-    int memo[1000][1024] = {};
-    int m, n, MOD = 1e9 + 7;
     int colorTheGrid(int m, int n) {
-        this->m = m; this->n = n;
-        return dp(0, 0, 0, 0);
+        // Step-1: Select the valid order
+        vector<int> table;
+        for(int state = 0;state<pow(3,m);state++){          // max is: 3^5 = 243
+            int cur = state;
+            int flag = 1;
+            vector<int> tmp;
+            for(int i = 0;i<m;i++){
+                int color = cur%3;
+                if(!tmp.empty() && color == tmp.back()){
+                    flag = 0;
+                    break;
+                }
+                tmp.push_back(color);
+                cur /= 3;
+            }
+            if(flag == 1){
+                table.push_back(state);
+            }
+        }
+        
+        int k = table.size();
+        
+        // Step-2: DP
+        vector<ll> pre(k,1);
+        
+        for(int s=1;s<n;s++){
+            vector<ll> cur(k);
+            for(int i=0;i<k;i++){
+                cur[i] = 0;
+                for(int j=0;j<k;j++){
+                    if(check(table[i],table[j],m)){
+                        cur[i] = (cur[i] + pre[j]) % M;
+                    }
+                }
+            }
+            swap(pre,cur);
+        }
+        
+        // Step-3: Calculate the result:
+        ll result = 0;
+        for(int s= 0;s<k;s++){
+            result = (result + pre[s]) % M;
+        }
+        return result;
     }
-    int dp(int c, int prevColMask, int r, int curColMask) {
-        if (c == n) return 1; // Found a valid way
-        if (r == 0 && memo[c][prevColMask]) return memo[c][prevColMask];
-        if (r == m) return dp(c + 1, curColMask, 0, 0);
-        int ans = 0;
-        for (int i = 1; i <= 3; ++i) // Try colors i in [1=RED, 2=GREEN, 3=BLUE]
-            if (getColor(prevColMask, r) != i && (r == 0 || getColor(curColMask, r-1) != i))
-                ans = (ans + dp(c, prevColMask, r + 1, setColor(curColMask, r, i))) % MOD;
-        if (r == 0) memo[c][prevColMask] = ans;
-        return ans;
-    }
-    int getColor(int mask, int pos) { // Get color of the `mask` at `pos`, use 2 bits to store a color
-        return (mask >> (2 * pos)) & 3;
-    }
-    int setColor(int mask, int pos, int color) { // Set `color` to the `mask` at `pos`, use 2 bits to store a color
-        return mask | (color << (2 * pos));
+    
+    bool check(int i,int j,int size){
+        for(int i=0;i<size;i++){
+            if(i%3 == j%3)          // check if the last digit is the same
+                return false;
+            i /= 3;
+            j /= 3;
+        }
+        return true;
     }
 };
