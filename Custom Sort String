@@ -1,0 +1,35 @@
+//Store order into map
+class Solution {
+public:
+    string customSortString(string order, string str) {
+        unordered_map<char,int> table;
+        int index = 1;
+        for(auto a:order){
+            table[a] = index++;
+        }
+        
+        sort(str.begin(),str.end(), [&](const char &a,const char &b){return table[a] < table[b];});
+        return str;
+    }
+};
+
+
+//Store str into map
+class Solution {
+public:
+    string customSortString(string order, string str) {
+        unordered_map<char,int> table;
+        string result = "";
+        for(auto a:str){
+            table[a] ++;
+        }
+        for(auto a:order){
+            result += string(table[a],a);
+            table[a] = 0;
+        }
+        for(auto a:table){
+            result += string(a.second,a.first);
+        }
+        return result;
+    }
+};
