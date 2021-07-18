@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> result;
+        if(!root) return result;
+        unordered_map<int,int> table;
+        int max_depth = -1;
+        
+        queue<TreeNode*> q;
+        queue<int> depth;
+        q.push(root);
+        depth.push(0);
+        while(!q.empty()){
+            int n = q.size();
+            for(int i=0;i<n;i++){
+                int de = depth.front();
+                depth.pop();
+                max_depth = max(max_depth,de);
+                TreeNode* cur = q.front();
+                q.pop();
+                table[max_depth] = cur->val;
+                
+                
+                if(cur->left){
+                    q.push(cur->left);
+                    depth.push(max_depth + 1);
+                }
+                if(cur->right){
+                    q.push(cur->right);
+                    depth.push(max_depth + 1);
+                }
+            }
+            cout << max_depth << " " << table[max_depth] << endl;
+        }
+        for(int i=0;i<=max_depth;i++){
+            result.push_back(table[i]);
+        }
+        return result;
+    }
+};
