@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+        if(nums.size() == 0) return false;
+        
+        sort (nums.begin(),nums.end());
+        int start = 0, end = nums.size()-1;
+        
+        while(start+1<end){
+            int mid = start + (end-start)/2;
+            if (nums[mid] == target) return true;
+            
+            if (nums[mid] < target){
+                start = mid;
+            }else{
+                end = mid;
+            }
+        }
+        if (nums[start] == target || nums[end] == target) return true;
+        
+        return false;
+    }
+};
