@@ -1,0 +1,35 @@
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> graph(numCourses);
+        vector<int> degree(numCourses);
+        
+        //Build the graph:
+        for(int i=0;i<prerequisites.size();i++){
+            graph[prerequisites[i][1]].push_back(prerequisites[i][0]);
+            degree[prerequisites[i][0]] ++;
+        }
+        
+        int number = 0;
+        queue<int> q;
+        
+        //Find the degree = 0 and put it into the queue
+        for(int i=0;i<numCourses;i++){
+            if(degree[i] == 0){
+                q.push(i);
+            }
+        }
+        while(!q.empty()){
+            int cur = q.front();
+            q.pop();
+            number ++;
+            for(int neighbor:graph[cur]){
+                degree[neighbor] --;
+                if(degree[neighbor] == 0)
+                    q.push(neighbor);
+            }
+        }
+        return number == numCourses;
+        
+    }
+};
