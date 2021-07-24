@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<vector<int>> result;
+    vector<vector<int>> combinationSum3(int k, int n) {
+        // backtracking
+        vector<int> cur;
+        helper(cur,1,k,n);
+        return result;
+    }
+private:
+    void helper(vector<int>& cur,int num,int k,int n){
+        // specific situation
+        if(n<0 || cur.size() > k)   return;
+        
+        // Correct solution
+        if(n==0 && cur.size() == k){
+            result.push_back(cur);
+            return;
+        }
+        
+        // Normal backtracking
+        for(int i=num;i<=9;i++){
+            cur.push_back(i);
+            helper(cur,i+1,k,n-i);
+            cur.pop_back();
+        }
+    }
+};
