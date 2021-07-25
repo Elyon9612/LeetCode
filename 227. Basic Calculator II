@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int calculate(string s) {
+        int result = 0;
+        stack<int> table;
+        
+        int cur = 0;
+        char oper = '+';
+        
+        for(int i=0;i<s.length();i++){
+            char curChar = s[i];
+            if(isdigit(curChar)){
+                cur = cur * 10 + (curChar - '0');
+            }
+            if(!isdigit(curChar) && curChar != ' ' || i == s.length()-1){
+                if(oper == '-')
+                    table.push(-cur);
+                else if(oper == '+'){
+                    table.push(cur);
+                }else if(oper == '*'){
+                    int tmp = table.top();
+                    table.pop();
+                    table.push(tmp * cur);
+                }else if(oper == '/'){
+                    int tmp = table.top();
+                    table.pop();
+                    table.push(tmp/cur);
+                }
+                oper = curChar;
+                cur = 0;
+            }
+        }
+        while(table.size()!=0){
+            result += table.top();
+            table.pop();
+        }
+        return result;
+    }
+};
