@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int ladderLength(string start, string end, vector<string>& wordList) {
+        unordered_set<string> dict;
+        for(auto a:wordList) dict.insert(a);
+        if(!dict.count(end)) return 0;
+
+        int n = start.size();
+        queue<string> queue;
+        int length = 2;
+ 
+        if (start == end) {  //若起始单词等于终点单词，直接返回1
+            return 1;
+        }
+ 
+        queue.push(start);       //将起点推进队列
+        dict.erase(start);   //删除dict中的起点单词（若存在的话）
+        while (!queue.empty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {  //遍历当前队列中所有节点
+                string word = queue.front(); 
+                queue.pop();
+                for (int i = 0; i < n; i++) {
+                    char oldChar = word[i];
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        if (c == oldChar) continue;
+                        word[i] = c;           //得到本节点能变换到达的单词
+                        if (word == end) {     //判断是否到达终点，若到达返回路径长度
+                            return length;
+                        }
+                        if (dict.find(word) != dict.end()) {  //判断可到的下一个单词是否在dict中
+                            queue.push(word);
+                            dict.erase(word);
+                        }
+                    }
+                    word[i] = oldChar;
+                }
+            } // for size
+            length++;   //当遍历完当前队列所有节点，那么所有情况下的点都已经走到下一步，路径长度+1
+        }
+        return 0;
+    }
+
+};

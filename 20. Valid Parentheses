@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool isValid(string s) {
+        string s1 = "({[";
+        unordered_map<char,char> s2 = {{'(', ')'}, {'{', '}'}, {'[', ']'}};
+        stack<char> table;
+        
+        for (auto c : s){
+            if (s1.find(c) != string::npos){
+                table.push(c);
+            }else{
+                if (table.empty() || c != s2.find(table.top())->second)
+                    return false;
+                else
+                    table.pop();
+            }
+        }
+        return table.empty();
+    }
+};
