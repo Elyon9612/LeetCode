@@ -1,0 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        unordered_map<int,int> table;
+        for(int i=0;i<inorder.size();i++){
+            table[inorder[i]] = i;
+        }
+        return helper(postorder,table,inorder.size()-1,0,inorder.size()-1);
+    }
+private:
+    TreeNode* helper(vector<int>& postorder,unordered_map<int,int>& table,int index,int l,int r){
+        if(l>r)
+            return NULL;
+        int value = postorder[index];
+        int mid = table[value];
+
+        TreeNode* root = new TreeNode(value);
+        root->right = helper(postorder,table,index-1,mid+1,r);
+        root->left = helper(postorder,table,index+mid-r-1,l,mid-1);
+        return root;
+    }
+};

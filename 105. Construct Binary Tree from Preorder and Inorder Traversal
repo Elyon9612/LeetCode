@@ -1,0 +1,22 @@
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        unordered_map<int,int> table;
+        for(int i=0;i<inorder.size();i++){
+            table[inorder[i]] = i;
+        }
+        return helper(preorder,table,0,0,inorder.size()-1);
+    }
+private:
+    TreeNode* helper(vector<int>& preorder,unordered_map<int,int>& table,int index,int l,int r){
+        int value = preorder[index];
+        int mid = table[value];      //   mid/root of inorder
+        
+        TreeNode* root = new TreeNode(value);
+        if(mid>l)
+            root->left = helper(preorder,table,index+1,l,mid-1);
+        if(mid<r)
+            root->right = helper(preorder,table,index+1+mid-l,mid+1,r);
+        return root;
+    }
+};
