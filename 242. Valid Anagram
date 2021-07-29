@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        //Sort and compare   O(nlogn)
+        //Hash table         O(n)
+        if(s.length() != t.length()){
+            return false;
+        }
+        
+        vector<int> table(26,0);
+        
+        for(auto a:s){
+            table[a - 'a'] ++;
+        }
+        
+        for(auto a:t){
+            table[a - 'a'] --;
+            if(table[a - 'a'] < 0){
+                return false;
+            }
+        }
+        for(int i=0;i<table.size();i++){
+            if(table[i] > 0)
+                return false;
+        }
+        return true;
+    }
+};
