@@ -1,0 +1,39 @@
+class Solution {
+    vector<int> first = {0, 1, 6, 8, 9}, second = {0, 1, 9, 8, 6};
+public:
+    vector<string> findStrobogrammatic(int n) {
+        vector<string> result;
+        int start = 0,end =n-1;
+        string tmp(n,'0');
+        helper(result,tmp,start,end);
+        return result;
+    }
+private:
+    void helper(vector<string>& result,string& s,int start,int end){
+        if(start > end){
+            result.push_back(s);
+            return;
+        }
+        if(start == end){
+            // int n = start(end-start)/2;
+            s[start] = '0';
+            result.push_back(s);
+            s[start] = '1';
+            result.push_back(s);
+            s[start] = '8';
+            result.push_back(s);
+            return;
+        }
+        // cout << start << " " << end << endl;
+        int i = start == 0 ? 1 : 0;
+        for(i;i<5;i++){
+            s[start] += first[i];
+            s[end] += second[i];
+            // cout << s << endl;
+            helper(result,s,start+1,end-1);
+            s[start] -= first[i];
+            s[end] -= second[i];
+        }
+        
+    }
+};

@@ -1,0 +1,27 @@
+//Runtime: 0 ms, faster than 100.00% of C++ online submissions for Strobogrammatic Number.
+//Memory Usage: 6.1 MB, less than 54.64% of C++ online submissions for Strobogrammatic Number.
+
+class Solution {
+public:
+    bool isStrobogrammatic(string num) {
+        int start = 0,end = num.length()-1;
+        while(start <= end){
+            if(num[start] == helper(num[end])){
+                start ++;
+                end --;
+            }else
+                return false;
+        }
+        return true;
+    }
+private:
+    char helper(char a){
+        if(a =='1' || a == '0' || a== '8')
+            return a;
+        else if(a == '6')
+            return '9';
+        else if(a == '9')
+            return '6';
+        return 'a';
+    }
+};
