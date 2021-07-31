@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<vector<int>> getFactors(int n) {
+        vector<vector<int>> result;
+        vector<int> temp;
+        helper(result,temp,2,n);
+        return result;
+    }
+private:
+    void helper(vector<vector<int>>& result,vector<int>& temp,int index,int n){
+        if(n == 1){
+            // result.push_back(temp);
+            return;
+        }
+        int k = sqrt(n);
+        // cout << n <
+        // < " " << k << endl;
+        for(int i=index;i<=sqrt(n);i++){
+            if(n%i == 0){
+                temp.push_back(i);
+                helper(result,temp,i,n/i);
+                temp.pop_back();
+            }
+        }
+        
+        if(temp.size() > 0){
+            temp.push_back(n);
+            result.push_back(temp);
+            temp.pop_back();
+        }
+    }
+};
