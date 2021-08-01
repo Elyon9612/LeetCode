@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool verifyPreorder(vector<int>& preorder) {
+        stack<int> table;
+        int lower = INT_MIN;
+        for(int i=0;i<preorder.size();i++){
+            if(table.empty() || preorder[i] < preorder[i-1]){
+                if(preorder[i] < lower) return false;
+                table.push(preorder[i]);
+            }else{
+                while(!table.empty() && preorder[i] > table.top()){
+                    lower = table.top();
+                    table.pop();
+                }
+                table.push(preorder[i]);
+            }
+        }
+        return true;
+    }
+};
