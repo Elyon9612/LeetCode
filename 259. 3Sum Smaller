@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int threeSumSmaller(vector<int>& nums, int target) {
+        // brute force O(n^3)
+        // Binary Search O(n^2 logn)
+        // two pointer  O(n^2)
+        if(nums.size() < 3)    return 0;
+        sort(nums.begin(),nums.end());
+        int sum = 0;
+        for(int i=0;i<nums.size()-2;i++){
+            sum += helper(nums,i+1,target-nums[i]);
+        }
+        return sum;
+    }
+private:
+    int helper(vector<int>& nums,int index,int target){
+        int sum = 0;
+        int l = index;
+        int r = nums.size()-1;
+        while(l < r){
+            if(nums[l] + nums[r] < target){
+                sum += r - l;
+                l ++;
+            }else{
+                r --;
+            }
+        }
+        return sum;
+    }
+};

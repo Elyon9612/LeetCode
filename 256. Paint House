@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minCost(vector<vector<int>>& costs) {
+        // brute force O(n^3)
+        // memorization O(n)
+        // DP   O(n)
+        if(costs.size() == 0)   return 0;
+        vector<int> pre = costs[costs.size()-1];
+        // for(int i=0;i<pre.size();i++)
+        //     cout << pre[i] << endl;
+        
+        for(int i = costs.size()-2;i>=0;i--){
+            vector<int> cur = costs[i];
+            cur[0] += min(pre[1],pre[2]);
+            cur[1] += min(pre[0],pre[2]);
+            cur[2] += min(pre[0],pre[1]);
+            pre = cur;
+            for(int i=0;i<pre.size();i++)
+                cout << pre[i] << " ";
+        }
+        return min(min(pre[0],pre[1]),pre[2]);
+    }
+};
