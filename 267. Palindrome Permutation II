@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<string> generatePalindromes(string s) {
+        vector<string> result;
+        vector<char> dir(26,0);
+        for(auto a:s){
+            dir[a-'a'] ++;
+        }
+        int index = 0;
+        for(int i=0;i<dir.size();i++){
+            index += (dir[i]&1);
+        }
+        if(index > 1)   return result;
+        
+        string cur(s.length(),' ');
+        helper(dir,0,s.size()-1,cur,result);
+        return result;
+    }
+private:
+    void helper(vector<char> dir,int l,int r,string& cur,vector<string>& result){
+        if(l > r){
+            result.push_back(cur);
+            return;
+        }
+        for(int i=0;i<26;i++){
+            if(l<r && dir[i] < 2)   continue;
+            if(l == r && dir[i] == 0)   continue;
+            cur[l] = cur[r] = i+'a';
+            dir[i] -= 2;
+            helper(dir,l+1,r-1,cur,result);
+            dir[i] += 2;
+        }
+    }
+};
