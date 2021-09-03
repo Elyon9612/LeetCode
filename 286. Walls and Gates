@@ -1,0 +1,36 @@
+class Solution {
+public:
+    void wallsAndGates(vector<vector<int>>& rooms) {
+        int n = rooms.size();
+        int m = rooms[0].size();
+        if(n ==0 || m ==0)  return;
+        
+        queue<pair<int,int>> q;
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(rooms[i][j] == 0){
+                    q.push({i,j});
+                }
+            }
+        }
+        while(!q.empty()){
+            pair<int,int> tmp = q.front();
+            q.pop();
+            int a = tmp.first;
+            int b = tmp.second;
+            for(int i=0;i<4;i++){
+                int x = a + row[i];
+                int y = b + col[i];
+                if(x<0 || y<0 || x >=n || y>=m||rooms[x][y] != 2147483647){
+                    continue;
+                }
+                rooms[x][y] = rooms[a][b] + 1;
+                q.push({x,y});
+            }
+        }
+    }
+private:
+    int row[4] = {0,0,1,-1};
+    int col[4] = {1,-1,0,0};
+};
