@@ -1,0 +1,44 @@
+class Solution {
+public:
+    void gameOfLife(vector<vector<int>>& board) {
+        // Space O(1)
+        int m = board.size();
+        int n = board[0].size();
+        
+        int neigh[3] = {0,1,-1};
+        
+        for(int row=0;row<m;row++){
+            for(int col=0;col<n;col++){
+                int number = 0;
+                for(int i=0;i<3;i++){
+                    for(int j=0;j<3;j++){
+                        if(!(neigh[i] == 0 && neigh[j] ==0)){
+                            int a = (row + neigh[i]);
+                            int b = (col + neigh[j]);
+                            
+                            if( (a<m && a>=0) && (b<n && b>=0) && (abs(board[a][b]) == 1))
+                                number ++;
+                        }
+                    }
+                }
+                
+                if(board[row][col] == 1 && (number<2 || number>3)){
+                    board[row][col] = -1;
+                }
+                if(board[row][col] ==0 && number == 3){
+                    board[row][col] = 2;
+                }
+            }
+        }
+        
+        for(int i = 0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(board[i][j] >0){
+                    board[i][j] = 1;
+                }else{
+                    board[i][j] = 0;
+                }
+            }
+        }
+    }
+};

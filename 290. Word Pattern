@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool wordPattern(string pattern, string s) {
+        // One hashtable method
+        unordered_map<char,string> table;
+        s += " ";
+        vector<string> word;
+        
+        int left = 0;
+        for(int i=0;i<s.length();i++){
+            if(s[i] == ' '){
+                string sub_s = s.substr(left,i-left);
+                word.push_back(sub_s);
+                left = i+1;
+            }
+        }
+        
+        if(pattern.length() != word.size()){
+            return false;
+        }
+        
+        for(int i=0;i<pattern.length();i++){
+            // check if the table contains the char and string
+            if(table.find(pattern[i]) == table.end()){
+                table[pattern[i]] = word[i];
+            } else {
+                // check if the table contains but not match the real word
+                if(table[pattern[i]] != word[i]){
+                    return false;
+                }
+            }
+        }
+        for(auto a:table){
+            for(auto b:table){
+                if(a.first != b.first && a.second == b.second)
+                    return false;
+            }
+        }
+        
+        return true;
+    }
+};
