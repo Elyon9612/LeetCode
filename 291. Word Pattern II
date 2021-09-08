@@ -1,0 +1,44 @@
+class Solution {
+public:
+    bool wordPatternMatch(string pattern, string s) {
+        return  match(pattern,0,s,0);
+    }
+private:
+    unordered_map<char,string> p_table;
+    unordered_map<string,char> c_table;
+    bool match(string pattern,int i,string s,int j){
+        int m = pattern.length();
+        int n = s.length();
+        // base case:
+        if(i==m || j==n){
+            if(i==m && j==n)
+                return true;
+            return false;
+        }
+        
+        bool check = false;
+        for(int k=j;k<n;k++){
+            string sub = s.substr(j,k-j+1);
+            if(p_table.find(pattern[i]) != p_table.end()){
+                if(p_table[pattern[i]] != sub)
+                    continue;
+            }else if(c_table.find(sub) != c_table.end()){
+                if(c_table[sub] != pattern[i])
+                    continue;
+            }else{
+                p_table[pattern[i]] = sub;
+                c_table[sub] = pattern[i];
+                check = true;
+            }
+            
+            if(match(pattern,i+1,s,k+1)){
+                return true;
+            }
+            if(check){
+                p_table.erase(pattern[i]);
+                c_table.erase(sub);
+            }
+        }
+        return false;
+    }
+};
