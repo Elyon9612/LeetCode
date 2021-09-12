@@ -1,0 +1,33 @@
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        unordered_map<char,int> table;
+        string result;
+        int bull = 0,cow = 0;
+        // Store the frequence of each char into the hash table
+        for(int i=0;i<secret.length();i++){
+            table[secret[i]] ++;
+        }
+        for(int i=0;i<guess.length();i++){
+            if(table.find(guess[i]) == table.end()){
+                continue;
+            }
+            if(table[guess[i]] > 0){
+                table[guess[i]] --;
+                if(secret[i] == guess[i]){
+                    bull ++;
+                }else{
+                    cow ++;
+                }
+            }else{
+                table[guess[i]] --;
+                if(secret[i] == guess[i]){
+                    cow --;
+                    bull ++;
+                }
+            }
+        }
+        result += to_string(bull) + 'A' + to_string(cow) + 'B';
+        return result;
+    }
+};
