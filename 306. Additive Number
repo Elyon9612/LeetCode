@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool isAdditiveNumber(string num) {
+        for(int i=1;i<num.length()-1;i++){
+            long long int n1 = stol(num.substr(0,i));
+            if(to_string(n1) != num.substr(0,i)){
+                break;
+            }
+            for(int j=i+1;j<num.length();j++){
+                long long int n2 = stol(num.substr(i,j-i));
+                if(to_string(n2) != num.substr(i,j-i)){
+                    break;
+                }
+                if(helper(n1,n2,num.substr(j),false)){      // pass in the left string right after num[j]
+                    return true;
+                }
+            }            
+        }
+        return false;
+    }
+private:
+    bool helper(long long int n1,long long int n2,string s,bool found){
+        // found & there is no more char/number
+        if(s.length() == 0 && found)
+            return true;
+        string tmp = to_string(n1+n2);
+        int index = min(s.length(),tmp.length());
+        if(s.substr(0,index) == tmp){
+            return helper(n2,stol(tmp),s.substr(index),true);
+        }
+        return false;
+    }
+};
