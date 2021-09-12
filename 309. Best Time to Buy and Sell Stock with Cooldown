@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        // DP with state machine
+        int sold = INT_MIN;
+        int held = INT_MIN;
+        int reset = 0;
+        
+        for(int a:prices){
+            int cur = sold;
+            sold = held + a;
+            held = max(held,reset - a);
+            reset = max(reset,cur);
+        }
+        return max(sold,reset);
+        
+    }
+};
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        // DP
+        vector<int> table(prices.size()+2);
+        
+        for(int i=prices.size()-1;i>=0;i--){
+            int tmp = 0;
+            
+            for(int j=i+1;j<prices.size();j++){
+                int profit = (prices[j] - prices[i]) + table[j+2];
+                tmp = max(profit,tmp);
+            }
+            
+            int tmp2 = table[i+1];
+            table[i] = max(tmp,tmp2);
+        }
+        // for(int i=0;i<table.size();i++){
+        //     cout << table[i] << endl;
+        // }
+        return table[0];
+    }
+};
