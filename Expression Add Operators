@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<string> addOperators(string num, int target) {
+        dfs(0,"",0,0,num,target);
+        return ans;
+    }
+private:
+    vector<string> ans;
+    void dfs(int i,string res,long res_so_far,long pre,string s,int target){
+        if(i==s.size()){
+            if(res_so_far == target)
+                ans.push_back(res);
+            return;
+        }
+        for(int j=i;j<s.size();j++){
+            if(j>i && s[i] == '0')
+                break;
+            long cur = stol(helper(s,i,j+1));
+            
+            if(i==0){
+                dfs(j+1,res+to_string(cur),cur,cur,s,target);
+            }else{
+                dfs(j+1,res+"+"+to_string(cur),res_so_far+cur,cur,s,target);
+                dfs(j+1,res+"-"+to_string(cur),res_so_far-cur,-cur,s,target);
+                dfs(j+1,res+"*"+to_string(cur),res_so_far-pre+pre*cur,cur*pre,s,target);
+            }
+        }
+    }
+    string helper(string s,int i,int j){
+        string result = "";
+        for(int x=i;x<j;x++){
+            result += s[x];
+        }
+        return result;
+    }
+};
