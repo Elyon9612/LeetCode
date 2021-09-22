@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int maxProduct(vector<string>& words) {
+        int result = 0;
+        int n = words.size();
+        vector<bitset<26>> table(n);
+        
+        for(int i=0;i<n;i++){
+            for(auto a:words[i]){
+                table[i][a - 'a'] = 1;
+            }
+            for(int j=0;j<i;j++){
+                if(!helper(table[i],table[j]))
+                    result = max(result,int(words[i].size() * words[j].size()));
+            }
+        }
+        return result;
+    }
+private:
+    bool helper(bitset<26>& a,bitset<26>& b){
+        for(int i=0;i<26;i++)   if(a[i] && b[i])    return true;
+        return false;
+    }
+};
