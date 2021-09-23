@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int result = 0;
+    int maxLength(vector<string>& arr) {
+        helper("",arr,0);
+        return result;
+    }
+private:
+    void helper(string base,vector<string> arr,int i){
+        if(base.size()>26){
+            return;
+        }
+        if(i == arr.size()){
+            result = max(result,check(base));
+            return;
+        }
+        helper(base,arr,i+1);
+        helper(base+arr[i],arr,i+1);
+    }
+    int check(string& s){
+        vector<int> fre(26,0);
+        for(auto c:s){
+            fre[c-'a'] ++;
+        }
+        for(int i=0;i<26;i++){
+            if(fre[i]>1)
+                return -1;
+        }
+        return s.size();
+    }
+};
