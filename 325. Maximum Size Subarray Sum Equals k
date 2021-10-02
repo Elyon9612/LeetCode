@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxSubArrayLen(vector<int>& nums, int k) {
+        //Prefix Sum + Hash Map
+        int result = 0;
+        unordered_map<int,int> table;
+        int cur = 0;
+        for(int i=0;i<nums.size();i++){
+            cur += nums[i];
+            if(cur == k){
+                result = max(result,i+1);
+            }
+            if(table.find(cur - k) != table.end()){
+                result = max(result,i-table[cur-k]);
+            }
+            if(table.find(cur) == table.end()){
+                table[cur] = i;
+            }
+        }
+        return result;
+    }
+};
