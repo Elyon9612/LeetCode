@@ -1,0 +1,80 @@
+struct CacheLine {
+    int key;
+    int value;
+    CacheLine* prev;
+    CacheLine* next;
+};
+
+class LRUCache {
+public:
+    unordered_map<int, CacheLine*> keyToLine;
+    CacheLine *head;
+    CacheLine *tail;
+    int maxSize;
+    int curSize;
+    
+    LRUCache(int capacity) {
+        maxSize = capacity;
+        curSize = 0;
+        head = nullptr;
+        tail = nullptr;
+    }
+    
+    int get(int key) {
+        auto it = keyToLine.find(key);
+        if (it != keyToLine.end()) { // cache hit
+            CacheLine* entry = it->second;
+            promoteCacheLine(entry);
+            return entry->value;
+        }
+        
+        return -1;
+    }
+    
+    void put(int key, int value) {
+        auto it = keyToLine.find(key);
+        if (it != keyToLine.end()) { // cache hit
+            CacheLine* entry = it->second;
+            entry->value = value;
+            promoteCacheLine(entry);
+            return;
+        }
+        
+        // cache miss
+        CacheLine* entry;
+        if (curSize == maxSize) {
+            // demote the tail, use its CacheLine structure
+            entry = tail;
+            keyToLine.erase(entry->key);
+        } else {
+            entry = new CacheLine();
+            curSize++;
+            if (curSize == 1) {
+                head = entry;
+                tail = entry;
+            }
+        }
+        
+        // put the new line at the top
+        entry->key = key;
+        entry->value = value;
+        keyToLine[key] = entry;
+        promoteCacheLine(entry);
+    }
+    
+    void promoteCacheLine(CacheLine* entry) {
+        if (entry == head) return; // nothing to be done
+        
+        if (entry == tail) tail = entry->prev; // update tail if it changes
+        
+        // remove the node from its current location
+        if (entry->prev) entry->prev->next = entry->next;
+        if (entry->next) entry->next->prev = entry->prev;
+        
+        // put it at the top
+        entry->prev = nullptr;
+        entry->next = head;
+        head->prev = entry;
+        head = entry;
+    }
+};
