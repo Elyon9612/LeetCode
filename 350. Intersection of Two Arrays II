@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> result;
+        unordered_map<int,int> table;
+        for(auto a:nums1){
+            table[a] ++;
+        }
+        for(auto a:nums2){
+            if(table.find(a) != table.end() && table[a] >0){
+                result.push_back(a);
+                table[a] --;
+            }
+        }
+        // sort(result.begin(),result.end());
+        return result;
+    }
+};
