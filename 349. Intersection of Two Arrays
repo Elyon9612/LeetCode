@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> result;
+        set<int> table;
+        for(auto a:nums1){
+            if(table.find(a) == table.end()){
+                table.insert(a);
+            }
+        }
+        for(auto a:nums2){
+            if(table.find(a) != table.end()){
+                table.erase(a);
+                result.push_back(a);
+            }
+        }
+        return result;
+    }
+};
