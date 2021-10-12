@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        // Heapsort and building Minheap
+        int n = nums.size();
+        minheap(nums,n);
+        heapsort(nums,n);
+        // for(auto a:nums){
+        //     cout << a<< " ";
+        // }
+        return nums[k-1];
+    }
+private:
+    void heapsort(vector<int>& array,int length){
+        for(int i=length-1;i>0;i--){
+            int tmp = array[i];
+            array[i] = array[0];
+            array[0] = tmp;
+            heapify(array,0,i);
+        }
+    }
+    
+    void minheap(vector<int>& array,int length){  
+        for(int i=length/2;i>=0;i--){
+            heapify(array,i,length);
+        }
+    }
+    
+    void heapify(vector<int>& array,int index,int length){
+        if(index >= length)
+            return;
+        int child1 = index*2 + 1;
+        int child2 = index*2 + 2;
+        int check = index;
+        if(child1 < length && array[check] > array[child1])
+            check = child1;
+        if(child2 < length && array[check] > array[child2])
+            check = child2;
+        if(check != index){
+            int tmp = array[check];
+            array[check] = array[index];
+            array[index] = tmp;
+            heapify(array,check,length);
+        }
+    }
+};
